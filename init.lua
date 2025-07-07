@@ -249,7 +249,13 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+  {
+    'NMAC427/guess-indent.nvim',
+    config = function()
+      -- This calls the setup function for the plugin
+      require('guess-indent').setup {}
+    end,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -688,10 +694,10 @@ require('lazy').setup({
         --
         eslint = {},
         ts_ls = {},
-        ruby_lsp = {
-          mason = false,
-          cmd = { 'mise', 'x', '--', 'ruby-lsp' },
-        },
+        -- ruby_lsp = {
+        --   mason = false,
+        --   cmd = { 'mise', 'x', '--', 'ruby-lsp' },
+        -- },
 
         lua_ls = {
           -- cmd = { ... },

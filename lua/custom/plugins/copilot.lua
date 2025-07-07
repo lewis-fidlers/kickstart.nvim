@@ -9,7 +9,7 @@ return {
       -- The `require("copilot").setup({})` is where you can pass specific options.
       -- For basic usage, an empty table {} is fine to enable defaults.
       require('copilot').setup {
-        -- Suggested configurations:
+        copilot_node_command = vim.fn.expand '$HOME' .. '/.local/share/mise/installs/node/22.17.0/bin/node', -- Node.js version must be > 20
         suggestion = {
           enabled = true,
           auto_trigger = true, -- Automatically suggest completions
