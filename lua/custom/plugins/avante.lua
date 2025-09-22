@@ -12,6 +12,13 @@ return {
     -- for example
     provider = 'copilot',
     providers = {
+    copilot = {
+        endpoint = "https://api.githubcopilot.com",
+        model = "claude-4-sonnet",
+        proxy = nil,
+        allow_insecure = false,
+        timeout = 30000,
+      },
       -- claude = {
       --   endpoint = 'https://api.anthropic.com',
       --   model = 'claude-sonnet-4-20250514',
@@ -20,15 +27,15 @@ return {
       --     temperature = 0.75,
       --     max_tokens = 20480,
       --   },
-      moonshot = {
-        endpoint = 'https://api.moonshot.ai/v1',
-        model = 'kimi-k2-0711-preview',
-        timeout = 30000, -- Timeout in milliseconds
-        extra_request_body = {
-          temperature = 0.75,
-          max_tokens = 32768,
-        },
-      },
+      -- moonshot = {
+      --   endpoint = 'https://api.moonshot.ai/v1',
+      --   model = 'kimi-k2-0711-preview',
+      --   timeout = 30000, -- Timeout in milliseconds
+      --   extra_request_body = {
+      --     temperature = 0.75,
+      --     max_tokens = 32768,
+      --   },
+      -- },
     },
   },
   dependencies = {
