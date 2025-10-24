@@ -693,7 +693,22 @@ require('lazy').setup({
         --
         --
         eslint = {},
-        ts_ls = {},
+        ts_ls = {
+          -- Disable formatting since we use prettierd through conform.nvim
+          init_options = {
+            preferences = {
+              disableSuggestions = true,
+            },
+          },
+          settings = {
+            typescript = {
+              format = { enable = false },
+            },
+            javascript = {
+              format = { enable = false },
+            },
+          },
+        },
         -- ruby_lsp = {
         --   mason = false,
         --   cmd = { 'mise', 'x', '--', 'ruby-lsp' },
@@ -789,6 +804,7 @@ require('lazy').setup({
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', stop_after_first = true },
         javascriptreact = { 'prettierd', stop_after_first = true },
+        typescript = { 'prettierd', stop_after_first = true },
       },
     },
   },
@@ -910,7 +926,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-moon'
+      -- vim.cmd.colorscheme 'tokyonight'
     end,
   },
 

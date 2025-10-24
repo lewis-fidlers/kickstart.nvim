@@ -11,3 +11,14 @@ vim.keymap.set('n', 'grv', function()
   vim.cmd 'vsplit'
   vim.lsp.buf.definition()
 end, { desc = 'Go to definition in vsplit' })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'qf',
+  callback = function()
+    vim.keymap.set('n', 'dd', function()
+      local qf = vim.fn.getqflist()
+      table.remove(qf, vim.fn.line '.')
+      vim.fn.setqflist(qf, 'r')
+    end, { buffer = true })
+  end,
+})
