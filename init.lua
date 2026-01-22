@@ -166,6 +166,14 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Folding configuration (VS Code-like behavior)
+-- Use indent-based folding
+vim.o.foldmethod = 'indent'
+-- Start with all folds open
+vim.o.foldlevelstart = 99
+-- Set fold column to show fold indicators in the gutter
+vim.o.foldcolumn = '1'
+
 require 'custom/mappings'
 
 -- [[ Basic Keymaps ]]
@@ -411,6 +419,10 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local lga_actions = require 'telescope-live-grep-args.actions'
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -421,9 +433,44 @@ require('lazy').setup({
         --   },
         -- },
         -- pickers = {}
+        defaults = {
+          path_display = { 'truncate' }, -- or "smart"
+        },
+        pickers = {
+          find_files = {
+            previewer = true,
+            mappings = {
+              i = {
+                ['<C-h>'] = function(prompt_bufnr)
+                  local current_picker = action_state.get_current_picker(prompt_bufnr)
+                  local show_hidden = not current_picker.finder.hidden
+                  local opts = {
+                    hidden = show_hidden,
+                    no_ignore = show_hidden,
+                  }
+                  actions.close(prompt_bufnr)
+                  require('telescope.builtin').find_files(opts)
+                end,
+              },
+            },
+          },
+          live_grep = {
+            previewer = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
+          },
+          live_grep_args = {
+            auto_quoting = true,
+            mappings = {
+              i = {
+                ["<C-'>"] = lga_actions.quote_prompt(),
+                ['<C-i>'] = lga_actions.quote_prompt { postfix = ' --iglob ' },
+                ['<C-space>'] = lga_actions.to_fuzzy_refine,
+              },
+            },
           },
         },
       }
@@ -431,6 +478,7 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'live_grep_args')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -444,6 +492,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>sa', function()
+        require('telescope').extensions.live_grep_args.live_grep_args()
+      end, { desc = 'Telescope live grep with args' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()

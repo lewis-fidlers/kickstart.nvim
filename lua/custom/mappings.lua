@@ -5,7 +5,12 @@ vim.api.nvim_set_keymap('n', ':W', ':w<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', ':WQ', ':wq<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', ':Wq', ':wq<CR>', { noremap = true, silent = true })
 
-vim.keymap.set('i', 'jj', '<Esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
+
+-- Telescope live grep with arguments
+-- vim.keymap.set('n', '<leader>sa', function()
+--   require('telescope').extensions.live_grep_args.live_grep_args()
+-- end, { desc = 'Telescope live grep with args' })
 
 vim.keymap.set('n', 'grv', function()
   vim.cmd 'vsplit'
